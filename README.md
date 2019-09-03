@@ -167,10 +167,10 @@ private ApiClient apiClient;
 public void setUp() {
     this.apiClient = api.getApiClient();
     OkHttpClient okHttpClient = new OkHttpClient().newBuilder()
-	    .readTimeout(30, TimeUnit.SECONDS)
-	    .addInterceptor(new SignerInterceptor())
-	    .build();
-	apiClient.setHttpClient(okHttpClient);
+        .readTimeout(30, TimeUnit.SECONDS)
+	.addInterceptor(new SignerInterceptor())
+	.build();
+    apiClient.setHttpClient(okHttpClient);
 }
 
 @Test
