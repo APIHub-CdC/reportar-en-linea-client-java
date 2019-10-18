@@ -142,22 +142,9 @@ key_alias=cdc
 key_password=your_super_secure_password
 ```
 
-### Paso 5. Modificar URL
+### Paso 5. Capturar los datos de la petición
 
-Modificar la URL de la petición en ***src/main/java/io/apihub/client/ApiClient*** en la línea 40, como se muestra en el siguiente fragmento de código:
-
-```java
-public class ApiClient {
-
-    private String basePath = "the_url";
-    private Map<String, String> defaultHeaderMap = new HashMap<String, String>();
-    private String tempFolderPath = null;
-    private JSON json;
-```
-
-### Paso 6. Capturar los datos de la petición
-
-En el archivo **CargaDeCuentasDePersonasFsicasApiTest**, que se encuentra en ***src/test/java/io/apihub/client/api*** se deberá modificar el siguiente fragmento de código con los datos correspondientes:
+En el archivo **CargaDeCuentasDePersonasFsicasApiTest**, que se encuentra en ***src/test/java/io/ReportarEnLinea/client/api***. Se deberá modificar los datos de la petición y de la URL para el consumo de la API en ***setBasePath("the_url")***, como se muestra en el siguiente fragmento de código con los datos correspondientes:
 
 ```java
 private final CargaDeCuentasDePersonasFsicasApi api = new CargaDeCuentasDePersonasFsicasApi();
@@ -166,6 +153,7 @@ private ApiClient apiClient;
 @Before()
 public void setUp() {
     this.apiClient = api.getApiClient();
+    this.apiClient.setBasePath("the_url");
 
     OkHttpClient okHttpClient = new OkHttpClient()
             .newBuilder()
