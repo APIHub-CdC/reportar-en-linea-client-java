@@ -142,22 +142,9 @@ key_alias=cdc
 key_password=your_super_secure_password
 ```
 
-### Paso 5. Modificar URL
+### Paso 5. Capturar los datos de la petición
 
-Modificar la URL de la petición en ***src/main/java/io/apihub/client/ApiClient*** en la línea 40, como se muestra en el siguiente fragmento de código:
-
-```java
-public class ApiClient {
-
-    private String basePath = "the_url";
-    private Map<String, String> defaultHeaderMap = new HashMap<String, String>();
-    private String tempFolderPath = null;
-    private JSON json;
-```
-
-### Paso 6. Capturar los datos de la petición
-
-En el archivo **CargaDeCuentasDePersonasFsicasApiTest**, que se encuentra en ***src/test/java/io/apihub/client/api*** se deberá modificar el siguiente fragmento de código con los datos correspondientes:
+En el archivo **CargaDeCuentasDePersonasFsicasApiTest**, que se encuentra en ***src/test/java/io/ReportarEnLinea/client/api***. Se deberá modificar los datos de la petición y de la URL para el consumo de la API en ***setBasePath("the_url")***, como se muestra en el siguiente fragmento de código con los datos correspondientes:
 
 ```java
 private final CargaDeCuentasDePersonasFsicasApi api = new CargaDeCuentasDePersonasFsicasApi();
@@ -166,85 +153,141 @@ private ApiClient apiClient;
 @Before()
 public void setUp() {
     this.apiClient = api.getApiClient();
-    OkHttpClient okHttpClient = new OkHttpClient().newBuilder()
-        .readTimeout(30, TimeUnit.SECONDS)
-	.addInterceptor(new SignerInterceptor())
-	.build();
+    this.apiClient.setBasePath("the_url");
+
+    OkHttpClient okHttpClient = new OkHttpClient()
+            .newBuilder()
+            .readTimeout(30, TimeUnit.SECONDS)
+            .addInterceptor(new SignerInterceptor())
+            .build();
     apiClient.setHttpClient(okHttpClient);
 }
 
 @Test
 public void registrarTest() throws ApiException {
-    String xApiKey = "XXXXXXXXXXXX";
-    String username = "XXXXXXXXXXXX";
-    String password = "XXXXXXXXXXXX";
+
+    String xApiKey = "XXXXXXXXXXXXXXXXXXX";
+    String username = "XXXXXXXXX";
+    String password = "XXXXXXXXX";
+
     CargasPFRegistrarRequest request = new CargasPFRegistrarRequest();
 
     Encabezado encabezado = new Encabezado();
-    encabezado.setClaveOtorgante("XXXXXXXXXXXX");
-    encabezado.setNombreOtorgante("XXXXXXXXXXXX");
+    encabezado.setClaveOtorgante("OTORGANTE");
+    encabezado.setNombreOtorgante("100000");
 
     Persona persona = new Persona();
 
     Nombre nombre = new Nombre();
-    nombre.setNombres("XXXXXXXXXXXX");
-    nombre.setApellidoPaterno("XXXXXXXXXXXX");
-    nombre.setApellidoMaterno("XXXXXXXXXXXX");
-    nombre.setFechaNacimiento("XXXXXXXXXXXX");
-    nombre.setRfc("XXXXXXXXXXXX");
+    nombre.setApellidoPaterno("PATERNO");
+    nombre.setApellidoMaterno("MATERNO");
+    nombre.setApellidoAdicional(null);
+    nombre.setNombres("NOMBRE");
+    nombre.setFechaNacimiento("19860627");
+    nombre.setRfc("PAPN860627");
+    nombre.setCurp("PAPN860627MOCNSB02");
+    nombre.setNumeroSeguridadSocial(null);
+    nombre.setNacionalidad("MX");
+    nombre.setResidencia("1");
+    nombre.setNumeroLicenciaConducir(null);
+    nombre.setEstadoCivil("S");
+    nombre.setSexo("F");
+    nombre.setClaveElectorIFE(null);
+    nombre.setNumeroDependientes("0");
+    nombre.setFechaDefuncion(null);
+    nombre.setTipoPersona("PF");
+    nombre.setIndicadorDefuncion("1");
     
     Domicilio domicilio = new Domicilio();
-    domicilio.setDireccion("XXXXXXXXXXXX");
-    domicilio.setColoniaPoblacion("XXXXXXXXXXXX");
-    domicilio.setCiudad("XXXXXXXXXXXX");
-    domicilio.cp("11230");
-    domicilio.setDelegacionMunicipio("XXXXXXXXXXXX");
+    domicilio.setDireccion("CONOCIDA S/N");
+    domicilio.setColoniaPoblacion("CONOCIDA");
+    domicilio.setDelegacionMunicipio("ECATEPEC");
+    domicilio.setCiudad("ECATEPEC");
     domicilio.setEstado("MEX");
-    
+    domicilio.setEstadoExtranjero(null);
+    domicilio.setCp("55010");
+    domicilio.setFechaResidencia(null);
+    domicilio.setNumeroCelular(null);
+    domicilio.setNumeroTelefono(null);
+    domicilio.setExtension(null);
+    domicilio.setFax(null);
+    domicilio.setTipoDomicilio("C");
+    domicilio.setTipoAsentamiento("2");
+    domicilio.setOrigenDomicilio("2");
+
     Empleo empleo = new Empleo();
-    empleo.setNombreEmpresa("XXXXXXXXXXXX");
-    empleo.setDireccion("XXXXXXXXXXXX");
-    empleo.setColoniaPoblacion("XXXXXXXXXXXX");
-    empleo.setDelegacionMunicipio("XXXXXXXXXXXX");
-    empleo.setCiudad("XXXXXXXXXXXX");
+    empleo.setNombreEmpresa("VTA DE TORTILLAS");
+    empleo.setDireccion("CONOCIDA S/N");
+    empleo.setColoniaPoblacion("CONOCIDA");
+    empleo.setDelegacionMunicipio("ECATEPEC");
+    empleo.setCiudad("ECATEPEC");
     empleo.setEstado("MX");
-    empleo.cp("XXXXX");
+    empleo.setCp("55010");
+    empleo.setNumeroTelefono(null);
+    empleo.setExtension(null);
+    empleo.setFax(null);
+    empleo.setPuesto(null);
+    empleo.setFechaContratacion(null);
     empleo.setClaveMoneda("MX");
-    empleo.setSalarioMensual("XXXXXXXXXXXX");
-    empleo.setFechaUltimoDiaEmpleo("XXXXXXX");
-    
+    empleo.setSalarioMensual("5600");
+    empleo.setFechaUltimoDiaEmpleo("20180228");
+    empleo.setFechaVerificacionEmpleo(null);
+    empleo.setOrigenRazonSocialDomicilio("2");
+
     Cuenta cuenta = new Cuenta();
-    cuenta.setClaveActualOtorgante("XXXXXXXXXXXX");
-    cuenta.setNombreOtorgante("XXXXXXXXXXXX");
-    cuenta.setCuentaActual("XXXXXXXXXXXX");
-    cuenta.setTipoResponsabilidad("X");
-    cuenta.setTipoCuenta("X");
-    cuenta.setTipoContrato("XX");
+    cuenta.setClaveActualOtorgante("0000080008");
+    cuenta.setNombreOtorgante("CIRCULO DE CREDITO");
+    cuenta.setCuentaActual("TCDC100004");
+    cuenta.setTipoResponsabilidad("O");
+    cuenta.setTipoCuenta("F");
+    cuenta.setTipoContrato("BC");
     cuenta.setClaveUnidadMonetaria("MX");
-    cuenta.setNumeroPagos("XX");
-    cuenta.setFrecuenciaPagos("X");
-    cuenta.setMontoPagar("X");
-    cuenta.setFechaAperturaCuenta("XXXXXXXXXXXX");
-    cuenta.setFechaUltimoPago("XXXXXXXXXXXX");
-    cuenta.setFechaUltimaCompra("XXXXXXXXXXXX");
-    cuenta.setFechaCierreCuenta("XXXXXXXXXXXX");
-    cuenta.setFechaCorte("XXXXXXXXXXXX");
-    cuenta.setCreditoMaximo("XXXXXXXXXXXX");
-    cuenta.setSaldoActual("X");
-    cuenta.setLimiteCredito("X");
-    cuenta.setSaldoVencido("X");
-    cuenta.setNumeroPagosVencidos("X");
+    cuenta.setValorActivoValuacion(null);
+    cuenta.setNumeroPagos("17");
+    cuenta.setFrecuenciaPagos("S");
+    cuenta.setMontoPagar("0");
+    cuenta.setFechaAperturaCuenta("20151103");
+    cuenta.setFechaUltimoPago("20151201");
+    cuenta.setFechaUltimaCompra("20151103");
+    cuenta.setFechaCierreCuenta("20160101");
+    cuenta.setFechaCorte("20180228");
+    cuenta.setGarantia(null);
+    cuenta.setCreditoMaximo("10000");
+    cuenta.setSaldoActual("0");
+    cuenta.setLimiteCredito("0");
+    cuenta.setSaldoVencido("0");
+    cuenta.setNumeroPagosVencidos("2");
     cuenta.setPagoActual(" V");
-    cuenta.setTotalPagosReportados("X");
-    
+    cuenta.setHistoricoPagos(null);
+    cuenta.setClavePrevencion("1");
+    cuenta.setTotalPagosReportados("0");
+    cuenta.setClaveAnteriorOtorgante(null);
+    cuenta.setNombreAnteriorOtorgante(null);
+    cuenta.setNumeroCuentaAnterior(null);
+    cuenta.setFechaPrimerIncumplimiento("");
+    cuenta.setSaldoInsoluto(null);
+    cuenta.setMontoUltimoPago(null);
+    cuenta.setFechaIngresoCarteraVencida(null);
+    cuenta.setMontoCorrespondienteIntereses("2");
+    cuenta.setFormaPagoActualIntereses("2");
+    cuenta.setDiasVencimiento("3");
+    cuenta.setPlazoMeses(null);
+    cuenta.setMontoCreditoOriginacion(null);
+    cuenta.setCorreoElectronicoConsumidor(null);
+    cuenta.setEstatusCAN("01");
+    cuenta.setOrdenPrelacionOrigen("01");
+    cuenta.setOrdenPrelacionActual("01");
+    cuenta.setFechaAperturaCAN("20151001");
+    cuenta.setFechaCancelacionCAN("null");
+
     persona.setNombre(nombre);
     persona.setDomicilio(domicilio);
     persona.setEmpleo(empleo);
     persona.setCuenta(cuenta);
-    
+
     request.setEncabezado(encabezado);
     request.setPersona(persona);
-    
+
     CargasResponse response = api.registrar(xApiKey, username, password, request);
     Assert.assertNotNull(response);
 }
