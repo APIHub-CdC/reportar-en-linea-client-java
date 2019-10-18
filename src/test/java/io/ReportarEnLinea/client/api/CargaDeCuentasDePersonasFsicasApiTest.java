@@ -30,6 +30,7 @@ public class CargaDeCuentasDePersonasFsicasApiTest {
 	@Before()
 	public void setUp() {
 		this.apiClient = api.getApiClient();
+		this.apiClient.setBasePath("the_url");
 
 		OkHttpClient okHttpClient = new OkHttpClient().newBuilder().readTimeout(30, TimeUnit.SECONDS)
 				.addInterceptor(new SignerInterceptor()).build();

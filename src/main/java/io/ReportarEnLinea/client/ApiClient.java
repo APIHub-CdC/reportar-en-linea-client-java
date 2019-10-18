@@ -37,7 +37,7 @@ import okhttp3.internal.http.HttpMethod;
 
 public class ApiClient {
 
-	private String basePath = "the_url";
+	private String basePath = "";
 	private Map<String, String> defaultHeaderMap = new HashMap<String, String>();
 	private String tempFolderPath = null;
 	private JSON json;
